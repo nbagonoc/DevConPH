@@ -52,10 +52,10 @@ class Register extends Component {
       <div className="register">
         <div className="container">
           <div className="row">
-            <div className="col-md-6 m-auto">
+            <div className="col-md-4 m-auto">
               <h1 className="display-4 text-center">Sign Up</h1>
               <p className="lead text-center">
-                Create your Developers Connect Account
+                Create your DevCon PH Account
               </p>
               <form noValidate onSubmit={this.onSubmit}>
                 <TextFieldGroup

@@ -10,6 +10,8 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 app.use(passport.initialize())
 
+app.use(express.static('client/build'))
+
 // import routes
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
@@ -29,6 +31,14 @@ mongoose.connect(db)
 app.use('/api/users',users)
 app.use('/api/profile',profile)
 app.use('/api/posts',posts)
+
+// for production
+if(process.env.NODE_ENV === 'production'){
+    const path = require('path');
+    app.get('/*',(req,res)=>{
+        res.sendfile(path.resolve(__dirname,'../client','build','index.html'))
+    })
+}
 
 // heroku port || local port
 const port = process.env.PORT || 3001;

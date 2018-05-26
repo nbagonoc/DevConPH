@@ -1,43 +1,44 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
-const passport = require('passport')
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const passport = require("passport");
 
-const app = express()
+const app = express();
 
 // import middlewares
-app.use(bodyParser.urlencoded({extended:false}))
-app.use(bodyParser.json())
-app.use(passport.initialize())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(passport.initialize());
 
-app.use(express.static('client/build'))
+app.use(express.static("client/build"));
 
 // import routes
-const users = require('./routes/api/users');
-const profile = require('./routes/api/profile');
-const posts = require('./routes/api/posts');
+const users = require("./routes/api/users");
+const profile = require("./routes/api/profile");
+const posts = require("./routes/api/posts");
 
 // DB config
-const db = require('./config/db_secret').mongoURI;
+const db = require("./config/db_secret").mongoURI;
 // Passport config
-require('./config/passport')(passport)
+require("./config/passport")(passport);
 
 // connect to mongoDB
-mongoose.connect(db)
-    .then(()=>console.log('we are connected'))
-    .catch(err=>console.log(err)) 
+mongoose
+  .connect(db)
+  .then(() => console.log("we are connected"))
+  .catch(err => console.log(err));
 
 // use routes
-app.use('/api/users',users)
-app.use('/api/profile',profile)
-app.use('/api/posts',posts)
+app.use("/api/users", users);
+app.use("/api/profile", profile);
+app.use("/api/posts", posts);
 
 // for production
-if(process.env.NODE_ENV === 'production'){
-    const path = require('path');
-    app.get('/*',(req,res)=>{
-        res.sendfile(path.resolve(__dirname,'../client','build','index.html'))
-    })
+if (process.env.NODE_ENV === "production") {
+  const path = require("path");
+  app.get("/*", (req, res) => {
+    res.sendfile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
 }
 
 // heroku port || local port
